@@ -26,14 +26,6 @@ class _CartState extends State<Cart> {
                 titleTextStyle:
                     TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
                 centerTitle: true,
-                leading: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                    )),
               ),
               body: (snapshot.hasData)
                   ? Column(

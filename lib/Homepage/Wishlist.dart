@@ -25,14 +25,6 @@ class _WishlistState extends State<Wishlist> {
                         color: Colors.black, fontWeight: FontWeight.bold),
                     backgroundColor: Colors.white,
                     centerTitle: true,
-                    leading: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.black,
-                        )),
                   ),
                   body: ListView.separated(
                       itemBuilder: (context, index) => Container(

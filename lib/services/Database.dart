@@ -14,8 +14,12 @@ class Dataservice {
   }
 
   Future wishlist(
-      String productID, String image, String name, int price) async {
-    return await record.doc(uid).collection("Wishlist").doc().set({
+    String productID,
+    String image,
+    String name,
+    int price,
+  ) async {
+    return await record.doc(uid).collection("Wishlist").doc(productID).set({
       "ProductID": productID,
       "Image": image,
       "Name": name,
@@ -24,8 +28,13 @@ class Dataservice {
   }
 
   Future cart(
-      String productID, String image, String name, int price, int size) async {
-    return await record.doc(uid).collection("Cart").doc().set({
+    String productID,
+    String image,
+    String name,
+    int price,
+    int size,
+  ) async {
+    return await record.doc(uid).collection("Cart").doc(productID).set({
       "ProductID": productID,
       "Image": image,
       "Name": name,

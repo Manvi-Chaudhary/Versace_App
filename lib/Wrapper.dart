@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'Homepage/Homepage.dart';
 import 'services/Authentication.dart';
 import 'package:provider/provider.dart';
+import "Homepage/btmnav.dart";
 
 class Wrapper extends StatefulWidget {
   const Wrapper({Key? key}) : super(key: key);
@@ -15,6 +16,6 @@ class _WrapperState extends State<Wrapper> {
   Widget build(BuildContext context) {
     final user = Provider.of<String?>(context);
     print(user);
-    return (user != null) ? Homepage() : Authenticate();
+    return (user != null) ? Btmnav() : Authenticate();
   }
 }

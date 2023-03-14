@@ -1,41 +1,39 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'Wrapper.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'services/Authentication.dart';
+import 'package:provider/provider.dart';
+import 'services/Authentication.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      // Application name
-      title: 'Flutter Hello World',
-      // Application theme data, you can set the colors for the application as
-      // you want
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      // A widget which will be started on application startup
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+void main() async {
+  const firebaseconfig = FirebaseOptions(
+      apiKey: "AIzaSyCMRMj7e1SA_KVN5PVMZTDifFciPq3MAuQ",
+      appId: "1:436660277800:android:c15c7eb8895ff303d65b1d",
+      messagingSenderId: "436660277800",
+      projectId: "versace-app");
+  await Firebase.initializeApp(options: firebaseconfig);
+  runApp(MyApp());
 }
 
-class MyHomePage extends StatelessWidget {
-  final String title;
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // The title text which will be shown on the action bar
-        title: Text(title),
-      ),
-      body: Center(
-        child: Text(
-          'Hello, World!',
-        ),
-      ),
-    );
+    return StreamProvider<String?>.value(
+        initialData: null,
+        value: Authservice().user,
+        child: MaterialApp(
+          // Application name
+          title: 'Versace App',
+
+          // Application theme data, you can set the colors for the application as
+          // you want
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            fontFamily: "Hanken Grotesk",
+          ),
+          // A widget which will be started on application startup
+          home: Wrapper(),
+        ));
   }
 }

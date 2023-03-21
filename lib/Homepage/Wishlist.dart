@@ -28,38 +28,49 @@ class _WishlistState extends State<Wishlist> {
                   ),
                   body: ListView.separated(
                       itemBuilder: (context, index) => Container(
-                          color: Colors.grey,
-                          height: 100,
-                          margin: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                            color: Colors.black,
+                          )),
+                          height: 130,
+                          margin: EdgeInsets.symmetric(horizontal: 5),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Container(
+                                margin: EdgeInsets.all(10),
+                                width: 150,
+                                height: 90,
                                 child: Center(
                                     child: Image.asset("assets/images/" +
                                         snapshot.data!.docs[index]
                                             .get("Image"))),
                                 decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 2, color: Colors.black)),
+                                    border: Border.all(color: Colors.black)),
                               ),
                               Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(snapshot.data!.docs[index].get("Name")),
+                                  Text(snapshot.data!.docs[index].get("Name"),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20)),
                                   SizedBox(height: 5),
                                   Text(
-                                      "${snapshot.data!.docs[index].get("Price")}"),
-                                  SizedBox(height: 5),
-                                  Text(
-                                    snapshot.data!.docs[index].get("ProductID"),
-                                    style: TextStyle(fontSize: 10),
-                                  ),
-                                  TextButton(
+                                      "Rs.${snapshot.data!.docs[index].get("Price")}",
+                                      style: TextStyle(fontSize: 15)),
+                                  SizedBox(height: 10),
+                                  TextButton.icon(
+                                      icon: Icon(Icons.delete,
+                                          color: Colors.redAccent),
                                       onPressed: () {
                                         Dataservice(uid: user).removewish(
                                             snapshot.data!.docs[index].id);
                                       },
-                                      child: Text("Remove"))
+                                      label: Text("Remove",
+                                          style: TextStyle(
+                                              color: Colors.redAccent)))
                                 ],
                               )
                             ],

@@ -16,6 +16,18 @@ class _CartState extends State<Cart> {
     return StreamBuilder<QuerySnapshot>(
         stream: Dataservice(uid: user!).cartItems,
         builder: (context, snapshot) {
+          int calamt() {
+            if (snapshot.hasData) {
+              int s = 0;
+              for (int i = 0; i < snapshot.data!.docs.length; i++) {
+                s += (snapshot.data!.docs[i].get("Price")) as int;
+              }
+              return s;
+            }
+            return 0;
+          }
+
+          int amt = calamt();
           return Scaffold(
               appBar: AppBar(
                 elevation: 0,
@@ -31,17 +43,23 @@ class _CartState extends State<Cart> {
                   ? Column(
                       children: [
                         SizedBox(
-                          height: 500,
+                          height: 450,
                           child: ListView.separated(
                               itemBuilder: (context, index) => Container(
-                                  color: Colors.grey,
-                                  height: 100,
-                                  margin: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                    color: Colors.black,
+                                  )),
+                                  height: 130,
+                                  margin: EdgeInsets.symmetric(horizontal: 5),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
                                       Container(
+                                        margin: EdgeInsets.all(10),
+                                        width: 150,
+                                        height: 90,
                                         child: Center(
                                             child: Image.asset(
                                                 "assets/images/" +
@@ -49,28 +67,37 @@ class _CartState extends State<Cart> {
                                                         .get("Image"))),
                                         decoration: BoxDecoration(
                                             border: Border.all(
-                                                width: 2, color: Colors.black)),
+                                                color: Colors.black)),
                                       ),
                                       Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Text(snapshot.data!.docs[index]
-                                              .get("Name")),
+                                          Text(
+                                              snapshot.data!.docs[index]
+                                                  .get("Name"),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20)),
                                           SizedBox(height: 5),
                                           Text(
-                                              "${snapshot.data!.docs[index].get("Price")}"),
-                                          SizedBox(height: 5),
-                                          Text(
-                                            snapshot.data!.docs[index]
-                                                .get("ProductID"),
-                                            style: TextStyle(fontSize: 10),
+                                            "Rs.${snapshot.data!.docs[index].get("Price")}",
+                                            style: TextStyle(fontSize: 15),
                                           ),
-                                          TextButton(
+                                          SizedBox(height: 10),
+                                          TextButton.icon(
+                                              icon: Icon(Icons.delete,
+                                                  color: Colors.redAccent),
                                               onPressed: () {
                                                 Dataservice(uid: user)
                                                     .removecart(snapshot
                                                         .data!.docs[index].id);
                                               },
-                                              child: Text("Remove"))
+                                              label: Text("Remove",
+                                                  style: TextStyle(
+                                                      color: Colors.redAccent)))
                                         ],
                                       )
                                     ],
@@ -79,6 +106,30 @@ class _CartState extends State<Cart> {
                                   SizedBox(height: 10),
                               itemCount: snapshot.data!.docs.length),
                         ),
+                        Container(
+                          height: 50,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "  Total to Pay",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text("Rs.${amt}  ",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold))
+                                  ]),
+                            ],
+                          ),
+                        )
                       ],
                     )
                   : Container());

@@ -79,13 +79,13 @@ class _HomepageState extends State<Homepage> {
                     ),
                     options: CarouselOptions(
                       height: 180.0,
-                      enlargeCenterPage: true,
+                      enlargeCenterPage: false,
                       autoPlay: true,
                       aspectRatio: 16 / 9,
                       autoPlayCurve: Curves.fastOutSlowIn,
                       enableInfiniteScroll: true,
                       autoPlayAnimationDuration: Duration(milliseconds: 800),
-                      viewportFraction: 0.8,
+                      viewportFraction: 1,
                     ),
                   )
                 ]),
@@ -117,7 +117,7 @@ class _HomepageState extends State<Homepage> {
                       fontWeight: FontWeight.w800)),
               SizedBox(height: 10),
               SizedBox(
-                height: 500,
+                height: 1000,
                 child: GridView.builder(
                     itemCount: 6,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -125,10 +125,11 @@ class _HomepageState extends State<Homepage> {
                         mainAxisSpacing: 10,
                         crossAxisSpacing: 5),
                     itemBuilder: (context, index) => SquareItem(
-                        image: image[index],
-                        name: name[index],
-                        price: price[index],
-                        productID: productID[index])),
+                          image: image[index],
+                          name: name[index],
+                          price: price[index],
+                          productID: productID[index],
+                        )),
               )
             ],
           ),

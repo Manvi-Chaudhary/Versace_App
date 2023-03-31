@@ -98,7 +98,7 @@ class _SignInState extends State<SignIn> {
         TextButton(
             child: Text('sign in anonmously'),
             onPressed: () async {
-              await Authservice().signinanon();
+              await Authservice().phone();
             }),
       ]),
     ));

@@ -13,20 +13,6 @@ class Dataservice {
         .set({"Email": email, "Username": username, "Password": password});
   }
 
-  Future wishlist(
-    String productID,
-    String image,
-    String name,
-    int price,
-  ) async {
-    return await record.doc(uid).collection("Wishlist").doc(productID).set({
-      "ProductID": productID,
-      "Image": image,
-      "Name": name,
-      "Price": price,
-    });
-  }
-
   Future cart(
     String productID,
     String image,
@@ -40,6 +26,24 @@ class Dataservice {
       "Name": name,
       "Price": price,
       "Size": size,
+    });
+  }
+
+  Future wishlist(
+    String productID,
+    String image,
+    String name,
+    int price,
+  ) async {
+    return await FirebaseFirestore.instance
+        .doc(uid)
+        .collection("Wishlist")
+        .doc(productID)
+        .set({
+      "ProductID": productID,
+      "Image": image,
+      "Name": name,
+      "Price": price,
     });
   }
 

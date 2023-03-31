@@ -10,6 +10,23 @@ class Authservice {
         .map((User? user) => (user != null) ? user.uid : null);
   }
 
+  Future phone() async {
+    try {
+      await _auth.verifyPhoneNumber(
+          phoneNumber: '+91 8800-212-485',
+          verificationCompleted: (PhoneAuthCredential p) async {
+            UserCredential _cred = await _auth.signInWithCredential(p);
+          },
+          verificationFailed: (FirebaseAuthException e) {
+            print(e.message);
+          },
+          codeSent: (String s, int? n) {},
+          codeAutoRetrievalTimeout: (String s) {});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future signinanon() async {
     try {
       await _auth.signInAnonymously();

@@ -1,3 +1,4 @@
+import 'package:app/Provider/WishlistProvider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'Wrapper.dart';
@@ -19,9 +20,10 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<String?>.value(
-        initialData: null,
-        value: Authservice().user,
+    return MultiProvider(
+        providers: [
+          StreamProvider.value(value: Authservice().user, initialData: null),
+        ],
         child: MaterialApp(
           // Application name
           title: 'Versace App',

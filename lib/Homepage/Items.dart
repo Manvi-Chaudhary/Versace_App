@@ -43,33 +43,50 @@ class SquareItem extends StatelessWidget {
   String name;
   int price;
   String productID;
-  SquareItem(
-      {Key? key,
-      required this.image,
-      required this.name,
-      required this.price,
-      required this.productID})
-      : super(key: key);
+
+  SquareItem({
+    Key? key,
+    required this.image,
+    required this.name,
+    required this.price,
+    required this.productID,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: TextButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Shop(
-                            image: image,
-                            name: name,
-                            price: price,
-                            productID: productID,
-                          )));
-              print(name + " Pressed");
-            },
-            child: Image.asset("assets/images/" + image)),
-        decoration: BoxDecoration(
-          border: Border.all(width: 2, color: Colors.black),
-        ));
+      height: 50,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(
+              child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Shop(
+                                  image: image,
+                                  name: name,
+                                  price: price,
+                                  productID: productID,
+                                )));
+                    print(name + " Pressed");
+                  },
+                  child: Image.asset("assets/images/" + image)),
+              decoration: BoxDecoration(
+                border: Border.all(width: 2, color: Colors.black),
+              )),
+          Text(
+            "${name}",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+          ),
+          Text(
+            "Rs.${price}",
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
+          ),
+        ],
+      ),
+    );
   }
 }
 

@@ -1,4 +1,5 @@
 import 'package:app/Homepage/Items.dart';
+import 'package:app/Provider/WishlistProvider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,20 +16,19 @@ class Shop extends StatefulWidget {
   final int price;
   final String productID;
 
-  const Shop(
-      {Key? key,
-      required this.image,
-      required this.name,
-      required this.price,
-      required this.productID})
-      : super(key: key);
+  const Shop({
+    Key? key,
+    required this.image,
+    required this.name,
+    required this.price,
+    required this.productID,
+  }) : super(key: key);
   _ShopState createState() => _ShopState();
 }
 
 class _ShopState extends State<Shop> {
   @override
   bool icol = false;
-
   Widget build(BuildContext context) {
     final user = Provider.of<String?>(context);
 
@@ -58,18 +58,19 @@ class _ShopState extends State<Shop> {
                         )
                       : Icon(CupertinoIcons.suit_heart, color: Colors.black),
                   onPressed: () async {
-                    if (icol) {
+                    SetState() {
+                      icol = !icol;
+                    }
+
+                    if (icol == false) {
                       await Dataservice(uid: user!)
                           .removewish(widget.productID);
                       print("removed");
                     } else {
-                      await Dataservice(uid: user!).wishlist(widget.productID,
+                      Dataservice(uid: user!).wishlist(widget.productID,
                           widget.image, widget.name, widget.price);
                       print("added");
                     }
-                    setState(() {
-                      icol = !icol;
-                    });
                   })
             ]),
         body: SingleChildScrollView(

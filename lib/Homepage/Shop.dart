@@ -42,7 +42,7 @@ class _ShopState extends State<Shop> {
               index = i;
             }
           }
-          print("build");
+          print("build __");
           return (snapshot.hasData)
               ? Scaffold(
                   appBar: AppBar(

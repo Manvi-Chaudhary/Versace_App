@@ -3,6 +3,8 @@ import 'package:app/Homepage/Wishlist.dart';
 import 'package:app/Homepage/cart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:app/services/Database.dart';
 
 class Btmnav extends StatefulWidget {
   const Btmnav({Key? key}) : super(key: key);

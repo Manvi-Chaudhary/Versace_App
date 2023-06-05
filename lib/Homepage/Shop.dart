@@ -1,5 +1,6 @@
 import 'package:app/Homepage/Items.dart';
-import 'package:app/Provider/WishlistProvider.dart';
+import 'package:app/Providers/wishlist_provider.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,184 +29,201 @@ class Shop extends StatefulWidget {
 
 class _ShopState extends State<Shop> {
   @override
-  bool icol = false;
   Widget build(BuildContext context) {
     final user = Provider.of<String?>(context);
 
-    return Scaffold(
-        appBar: AppBar(
-            elevation: 0,
-            title: Text(
-              "Shop the collection",
-            ),
-            titleTextStyle: TextStyle(color: Colors.black),
-            backgroundColor: Colors.white,
-            centerTitle: true,
-            leading: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                )),
-            actions: [
-              IconButton(
-                  icon: (icol)
-                      ? Icon(
-                          CupertinoIcons.heart_fill,
-                          color: Colors.red,
-                        )
-                      : Icon(CupertinoIcons.suit_heart, color: Colors.black),
-                  onPressed: () async {
-                    SetState() {
-                      icol = !icol;
-                    }
-
-                    if (icol == false) {
-                      await Dataservice(uid: user!)
-                          .removewish(widget.productID);
-                      print("removed");
-                    } else {
-                      Dataservice(uid: user!).wishlist(widget.productID,
-                          widget.image, widget.name, widget.price);
-                      print("added");
-                    }
-                  })
-            ]),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    padding: EdgeInsets.all(20),
-                    width: 400,
-                    height: 250,
-                    child: Image.asset("assets/images/" + widget.image),
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 2, color: Colors.black))),
-                SizedBox(height: 10),
-                Text(widget.name.toUpperCase(),
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                SizedBox(height: 10),
-                Text("Rs." + "${widget.price}",
-                    style: TextStyle(
-                      fontSize: 20,
-                    )),
-                SizedBox(height: 10),
-                SizedBox(
-                    height: 2,
-                    child: Divider(
-                      color: Colors.black,
-                    )),
-                SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("SIZE",
-                        style: TextStyle(
-                          fontSize: 20,
-                        )),
-                    TextButton(
-                        onPressed: () {},
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(color: Colors.grey))),
-                          child: Center(
-                            child: Text("SIZE GUIDE",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.grey,
-                                )),
+    return StreamBuilder<QuerySnapshot>(
+        stream: Dataservice(uid: user!).wish,
+        builder: (context, snapshot) {
+          print(snapshot.data!.docs.first);
+          int? index = null;
+          for (int i = 0; i < snapshot.data!.docs.length; i++) {
+            if (snapshot.data!.docs[i].id == widget.productID) {
+              index = i;
+            }
+          }
+          print("build");
+          return (snapshot.hasData)
+              ? Scaffold(
+                  appBar: AppBar(
+                      elevation: 0,
+                      title: Text(
+                        "Shop the collection",
+                      ),
+                      titleTextStyle: TextStyle(color: Colors.black),
+                      backgroundColor: Colors.white,
+                      centerTitle: true,
+                      leading: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Colors.black,
+                          )),
+                      actions: [
+                        IconButton(
+                            icon: (index != null)
+                                ? Icon(
+                                    CupertinoIcons.heart_fill,
+                                    color: Colors.red,
+                                  )
+                                : Icon(CupertinoIcons.suit_heart,
+                                    color: Colors.black),
+                            onPressed: () async {
+                              if (index != null) {
+                                await Dataservice(uid: user)
+                                    .removewish(widget.productID);
+                                print("removed");
+                              } else {
+                                Dataservice(uid: user).wishlist(
+                                    widget.productID,
+                                    widget.image,
+                                    widget.name,
+                                    widget.price);
+                                print("added");
+                                setState(() {});
+                              }
+                            })
+                      ]),
+                  body: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              padding: EdgeInsets.all(20),
+                              width: 400,
+                              height: 250,
+                              child:
+                                  Image.asset("assets/images/" + widget.image),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 2, color: Colors.black))),
+                          SizedBox(height: 10),
+                          Text(widget.name.toUpperCase(),
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
+                          SizedBox(height: 10),
+                          Text("Rs." + "${widget.price}",
+                              style: TextStyle(
+                                fontSize: 20,
+                              )),
+                          SizedBox(height: 10),
+                          SizedBox(
+                              height: 2,
+                              child: Divider(
+                                color: Colors.black,
+                              )),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("SIZE",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  )),
+                              TextButton(
+                                  onPressed: () {},
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color: Colors.grey))),
+                                    child: Center(
+                                      child: Text("SIZE GUIDE",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.grey,
+                                          )),
+                                    ),
+                                  ))
+                            ],
                           ),
-                        ))
-                  ],
-                ),
-                SizedBox(
-                  width: 250,
-                  height: 50,
-                  child: SelSize(),
-                ),
-                SizedBox(
-                    height: 2,
-                    child: Divider(
-                      color: Colors.black,
-                    )),
-                SizedBox(height: 10),
-                Text("COLOR",
-                    style: TextStyle(
-                      fontSize: 20,
-                    )),
-                SizedBox(
-                  height: 50,
-                  width: 200,
-                  child: SelColor(),
-                ),
-                SizedBox(
-                    height: 2,
-                    child: Divider(
-                      color: Colors.black,
-                    )),
-                SizedBox(height: 10),
-                Text("PRODUCT DETAILS",
-                    style: TextStyle(
-                      fontSize: 20,
-                    )),
-                SizedBox(height: 5),
-                Text("this is product details\nproductID:#mmmm"),
-                SizedBox(height: 10),
-                SizedBox(
-                    height: 2,
-                    child: Divider(
-                      color: Colors.black,
-                    )),
-                SizedBox(height: 10),
-                Text("Shipping and Returns",
-                    style: TextStyle(
-                      fontSize: 20,
-                    )),
-                SizedBox(height: 5),
-                Text(
-                    "SHIPPING : delivery is expected by\nRETURN : return on this item"),
-                SizedBox(height: 10),
-              ],
-            ),
-          ),
-        ),
-        bottomNavigationBar: Material(
-          child: TextButton(
-              onPressed: () async {
-                await Dataservice(uid: user!).cart(widget.productID,
-                    widget.image, widget.name, widget.price, 28);
-                print("added to cart");
-              },
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                    color: Color(0Xffb7ea18),
-                    borderRadius: BorderRadius.zero,
-                    border: Border.all(
-                        color: Colors.black,
-                        width: 3,
-                        style: BorderStyle.solid)),
-                child: Center(
-                  child: (false)
-                      ? Text("ADDED TO CART",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              backgroundColor: Color(0Xffb7ea18),
-                              color: Colors.black))
-                      : Text("ADD TO CART",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              backgroundColor: Color(0Xffb7ea18),
-                              color: Colors.black)),
-                ),
-              )),
-        ));
+                          SizedBox(
+                            width: 250,
+                            height: 50,
+                            child: SelSize(),
+                          ),
+                          SizedBox(
+                              height: 2,
+                              child: Divider(
+                                color: Colors.black,
+                              )),
+                          SizedBox(height: 10),
+                          Text("COLOR",
+                              style: TextStyle(
+                                fontSize: 20,
+                              )),
+                          SizedBox(
+                            height: 50,
+                            width: 200,
+                            child: SelColor(),
+                          ),
+                          SizedBox(
+                              height: 2,
+                              child: Divider(
+                                color: Colors.black,
+                              )),
+                          SizedBox(height: 10),
+                          Text("PRODUCT DETAILS",
+                              style: TextStyle(
+                                fontSize: 20,
+                              )),
+                          SizedBox(height: 5),
+                          Text("this is product details\nproductID:#mmmm"),
+                          SizedBox(height: 10),
+                          SizedBox(
+                              height: 2,
+                              child: Divider(
+                                color: Colors.black,
+                              )),
+                          SizedBox(height: 10),
+                          Text("Shipping and Returns",
+                              style: TextStyle(
+                                fontSize: 20,
+                              )),
+                          SizedBox(height: 5),
+                          Text(
+                              "SHIPPING : delivery is expected by\nRETURN : return on this item"),
+                          SizedBox(height: 10),
+                        ],
+                      ),
+                    ),
+                  ),
+                  bottomNavigationBar: Material(
+                    child: TextButton(
+                        onPressed: () async {
+                          await Dataservice(uid: user!).cart(widget.productID,
+                              widget.image, widget.name, widget.price, 28);
+                          print("added to cart");
+                        },
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: Color(0Xffb7ea18),
+                              borderRadius: BorderRadius.zero,
+                              border: Border.all(
+                                  color: Colors.black,
+                                  width: 3,
+                                  style: BorderStyle.solid)),
+                          child: Center(
+                            child: (false)
+                                ? Text("ADDED TO CART",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        backgroundColor: Color(0Xffb7ea18),
+                                        color: Colors.black))
+                                : Text("ADD TO CART",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        backgroundColor: Color(0Xffb7ea18),
+                                        color: Colors.black)),
+                          ),
+                        )),
+                  ))
+              : Scaffold(body: CircularProgressIndicator());
+        });
   }
 }

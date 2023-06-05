@@ -117,7 +117,7 @@ class _HomepageState extends State<Homepage> {
                       fontWeight: FontWeight.w800)),
               SizedBox(height: 10),
               SizedBox(
-                height: 1000,
+                height: 550,
                 child: GridView.builder(
                     itemCount: 6,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

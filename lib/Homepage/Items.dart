@@ -54,28 +54,33 @@ class SquareItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
+      decoration: BoxDecoration(
+        border: Border.all(width: 2, color: Colors.black),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-              child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Shop(
-                                  image: image,
-                                  name: name,
-                                  price: price,
-                                  productID: productID,
-                                )));
-                    print(name + " Pressed");
-                  },
-                  child: Image.asset("assets/images/" + image)),
-              decoration: BoxDecoration(
+            height: 100,
+            width: 120,
+            child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Shop(
+                                image: image,
+                                name: name,
+                                price: price,
+                                productID: productID,
+                              )));
+                  print(name + " Pressed");
+                },
+                child: Image.asset("assets/images/" + image)),
+            /*decoration: BoxDecoration(
                 border: Border.all(width: 2, color: Colors.black),
-              )),
+              )*/
+          ),
           Text(
             "${name}",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),

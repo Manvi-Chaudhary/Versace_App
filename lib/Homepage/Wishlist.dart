@@ -1,3 +1,4 @@
+import 'package:app/Providers/wishlist_provider.dart';
 import 'package:app/services/Database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class _WishlistState extends State<Wishlist> {
     return StreamBuilder<QuerySnapshot>(
         stream: Dataservice(uid: user!).wish,
         builder: (context, snapshot) {
+          print(snapshot.data!.docs[0]);
           return (snapshot.hasData)
               ? Scaffold(
                   appBar: AppBar(

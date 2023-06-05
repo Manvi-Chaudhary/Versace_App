@@ -35,20 +35,24 @@ class Dataservice {
     String name,
     int price,
   ) async {
-    return await FirebaseFirestore.instance
-        .doc(uid)
-        .collection("Wishlist")
-        .doc(productID)
-        .set({
-      "ProductID": productID,
-      "Image": image,
-      "Name": name,
-      "Price": price,
-    });
+    try {
+      return await record.doc(uid).collection("Wishlist").doc(productID).set({
+        "ProductID": productID,
+        "Image": image,
+        "Name": name,
+        "Price": price,
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future removewish(id) async {
-    return await record.doc(uid).collection("Wishlist").doc(id).delete();
+    try {
+      return await record.doc(uid).collection("Wishlist").doc(id).delete();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future removecart(id) async {

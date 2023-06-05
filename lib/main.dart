@@ -1,4 +1,5 @@
-import 'package:app/Provider/WishlistProvider.dart';
+import 'package:app/Providers/wishlist_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'Wrapper.dart';
@@ -6,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'services/Authentication.dart';
 import 'package:provider/provider.dart';
 import 'services/Authentication.dart';
+import 'services/Database.dart';
 
 void main() async {
   const firebaseconfig = FirebaseOptions(
@@ -23,6 +25,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           StreamProvider.value(value: Authservice().user, initialData: null),
+          ChangeNotifierProvider(create: (_) => WishlistProvider())
         ],
         child: MaterialApp(
           // Application name
